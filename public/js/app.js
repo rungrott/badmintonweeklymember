@@ -127,4 +127,9 @@ const firebaseConfig = {
         }
     };
 
+    vm.reload = async function(){
+      vm.doInit();
+      loadMembers();
+    };
+
   });
