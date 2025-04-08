@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html ng-app="badmintonApp">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Badminton Weekly Group</title>
+  <!-- AngularJS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+  <!-- App Script -->
+  <script src="js/app.js"></script>
+  <!-- <link rel="stylesheet" href="badmintonApp.css"> -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body ng-controller="MainController as vm" ng-init="vm.doInit()">
+
+  <div ng-if="!vm.user" class="container container-fluid">
+    <button ng-click="vm.loginWithGoogle()" class="btn btn-primary w-100 ">Login with Google</button>
+  </div>
+
+  <div ng-if="vm.user" class="container container-fluid">
+    <h3 class="text-center">Welcome, {{ vm.user.displayName }} : {{ vm.user.email }}</h3>
+    <p> <button ng-click="vm.logout()" class="btn btn-primary w-100">Logout</button></p>
+    <hr/>
+    <div class="row">
+        <div class="col-md-8">
+            <input type="text" id="text-nickname" class="form-control" ng-model="vm.nickname" placeholder="ลงชื่อ" />
+        </div>
+        <div class="col-md-4">
+            <button class="btn btn-success w-100" ng-click="vm.submitNickname()" ng-disabled="!vm.nickname || vm.memberLimitReached">Submit</button>
+        </div>
+    </div>
+    <hr/>
+    <p ng-if="vm.memberLimitReached" class="fs-3 bg-danger text-white">Member limit reached for this week!</p>
+
+    <h4 class="text">สมาชิกที่ลงชื่อแล้ว ({{ vm.courtName }} วันที่ {{ vm.playDate }})</h4>
+    <ol class="list-group list-group-numbered">
+        <li class="list-group-item d-flex justify-content-between align-items-start" ng-repeat="member in vm.members">
+            <div class="ms-2 me-auto">
+                {{ member.nickname }} <span ng-if="vm.showTimestamp">at {{ vm.formatTimestamp(member.timestamp) | date:'yyyy-MM-dd HH:mm:ss' }}</span>
+            </div>
+            <span ng-if="vm.isAdmin" class="ms-2">
+                <button class="btn btn-sm btn-danger" ng-click="vm.deleteMember(member.id)">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </span>
+        </li>
+    </ol>
+    <hr/>
+    <div ng-if="vm.isAdmin" class="row form-control">
+        <h3 class="text">Admin Config</h3>
+        <hr/>
+        <div class="col-md-12">
+            <label for="adminPlayDate" class="label">วันที่เล่นแบด : </label>
+            <input type="text" id="adminPlayDate" class="form-control" ng-model="vm.playDate" />
+            <br/>
+        </div>
+        <div class="col-md-12">
+            <label for="adminMemberLimit" class="label">จำนวนสมาชิกที่รับได้ : </label>
+            <input type="text" id="adminMemberLimit" class="form-control" ng-model="vm.MEMBER_LIMIT" />    
+            <br/>
+        </div>
+        <div class="col-md-12">
+            <label for="adminCourtName" class="label">ชื่อคอร์ทแบด : </label>
+            <input type="text" id="adminCourtName" class="form-control" ng-model="vm.courtName" />
+            <br/>
+        </div>
+        <div class="col-md-12">
+            <label for="adminShowTimestamp" class="label">โชว์ Timestamp : </label>
+            <select id="adminShowTimestamp" class="form-select" ng-model="vm.showTimestamp" ng-options="opt for opt in [true,false]">
+                <option value="">---เลือก---</option>
+            </select>
+            <br/>
+        </div>
+        <div class="col-md-12">
+            <button class="btn btn-success w-100" ng-click="vm.saveWebConfig()" >Save Config</button>
+            <br/>
+        </div>
+        <div class="col-md-12">
+            <br/>
+            <button class="btn btn-warning w-100" ng-click="vm.resetAll()">Reset All Members</button>
+        </div>
+        
+        <hr/>
+        
+    </div>
+  </div>
+
+</body>
+</html>

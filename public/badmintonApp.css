@@ -1,0 +1,39 @@
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 16px;
+    font-family: sans-serif;
+  }
+  
+  input[type="text"], button, select {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    font-size: 16px;
+    box-sizing: border-box;
+  }
+  
+  ul {
+    padding: 0;
+    list-style: none;
+  }
+  
+  li {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .admin-controls button {
+    margin-left: 8px;
+  }
+  
+  @media (max-width: 480px) {
+    h2 {
+      font-size: 1.3em;
+    }
+  
+    input[type="text"], button {
+      font-size: 14px;
+      padding: 10px;
+    }
+  }
