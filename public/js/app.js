@@ -87,6 +87,7 @@ const annonymousUser = {
           vm.isAdmin = userDoc.exists && userDoc.data().role === "admin";
         }else{
           console.log("setup annonymous user");
+          vm.isAdmin = false;
           $scope.$apply(() => {
             vm.user = annonymousUser;
           });
