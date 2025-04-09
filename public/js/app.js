@@ -70,6 +70,7 @@ const annonymousUser = {
   
     // Logout
     vm.logout = function() {
+      vm.isAdmin = false;
       auth.signOut();
     };
   
