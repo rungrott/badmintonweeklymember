@@ -1,4 +1,9 @@
 // Firebase config
+//const VERSION = "1.0.1";
+const VERSION = "1.1";
+//const VERSION_DESC = "add bootstrap for Responsive UI";
+const VERSION_DESC = "new feature add anonymous user";
+
 const firebaseConfig = {
     apiKey: "AIzaSyBCbO0XyJWgjaG2njpnsGoOIeGImjjLEb8",
     authDomain: "badmintonweeklymember.firebaseapp.com",
@@ -7,6 +12,11 @@ const firebaseConfig = {
     messagingSenderId: "989527524097",
     appId: "1:989527524097:web:ab1ad8f16344ce20fe9100"
   };
+const annonymousUser = {
+  email: "anonymous@dummymail.com",
+  displayName: "Anonymous",
+  uid: "anonymouse.uid"
+};
   
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
@@ -26,6 +36,8 @@ const firebaseConfig = {
     vm.memberLimitReached = false;
     vm.showTimestamp = true;
     vm.MEMBER_LIMIT = 10;
+    vm.version = VERSION;
+    vm.versionDesc = VERSION_DESC;
   
     vm.doInit = async function(){
         const webConfigDoc = await db.collection("config").doc("webconfig").get();
@@ -36,11 +48,24 @@ const firebaseConfig = {
             vm.courtName = webConfig.courtName;
             vm.showTimestamp = webConfig.showTimestamp;
         }
+        if(vm.user.isAnonymous == true){
+          vm.user.email = "anonymous@badmintonweeklymember.firebasestorage.app";
+          vm.user.displayName = "Anonymous";
+          vm.user.uid = "anonymouse.uid";
+        }
     }
     // Login with Google
     vm.loginWithGoogle = function() {
       const provider = new firebase.auth.GoogleAuthProvider();
       auth.signInWithPopup(provider);
+    };
+
+    vm.loginWithAnonymous = function(){
+      firebase.auth().signInAnonymously().then(() => {
+        console.log("Signed in as anonymous");
+      }).catch((error) => {
+        console.error("Error signing in anonymously:", error);
+      });
     };
   
     // Logout
@@ -50,15 +75,23 @@ const firebaseConfig = {
   
     // On Auth State Changed
     auth.onAuthStateChanged(async function(user) {
+      console.log("onAuthStateChange : user="+JSON.stringify(user));
       $scope.$apply(() => {
         vm.user = user;
       });
-  
       if (user) {
-        // Check role
-        const userDoc = await db.collection("users").doc(user.email).get();
-        vm.isAdmin = userDoc.exists && userDoc.data().role === "admin";
-  
+        if(!user.isAnonymous){
+            // Check role
+          console.log("user.email : "+user.email);
+          const userDoc = await db.collection("users").doc(user.email).get();
+          vm.isAdmin = userDoc.exists && userDoc.data().role === "admin";
+        }else{
+          console.log("setup annonymous user");
+          $scope.$apply(() => {
+            vm.user = annonymousUser;
+          });
+          
+        }
         // Load members
         loadMembers();
       }
@@ -95,17 +128,22 @@ const firebaseConfig = {
   
     // Admin: delete member
     vm.deleteMember = async function(id) {
-      await db.collection("weekly_members").doc(id).delete();
-      loadMembers();
+      if(window.confirm(`ต้องการลบสมาชิก : ${id} `)){
+        await db.collection("weekly_members").doc(id).delete();
+        loadMembers();
+      }
+      
     };
   
     // Admin: reset all
     vm.resetAll = async function() {
-      const snapshot = await db.collection("weekly_members").get();
-      const batch = db.batch();
-      snapshot.forEach(doc => batch.delete(doc.ref));
-      await batch.commit();
-      loadMembers();
+      if(window.confirm("ต้องการลบสมาชิกทั้งหมดใช่ไหม")){
+        const snapshot = await db.collection("weekly_members").get();
+        const batch = db.batch();
+        snapshot.forEach(doc => batch.delete(doc.ref));
+        await batch.commit();
+        loadMembers();
+      }
     };
 
     vm.formatTimestamp = function(timestamp) {
