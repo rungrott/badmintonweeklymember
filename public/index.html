@@ -22,21 +22,15 @@
             <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>    
         </symbol>
     </svg>
-    
-    <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
-        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
-    </svg> -->
-    
   <div ng-if="!vm.user" class="container container-fluid">
-    <button ng-click="vm.loginWithGoogle()" class="btn btn-primary w-50 ">Login with Google</button>
+    <button ng-click="vm.loginWithGoogle()" class="btn btn-primary w-100 ">Login with Google</button>
     <br/><br/>
-    <button ng-click="vm.loginWithAnonymous()" class="btn btn-secondary w-50 ">Login as Anonymous</button>
+    <button ng-click="vm.loginWithAnonymous()" class="btn btn-secondary w-100 ">Login as Anonymous</button>
   </div>
 
   <div ng-if="vm.user" class="container container-fluid">
     <h3 class="text-center">ลงชื่อตีแบด {{ vm.courtName }} วันที่ {{ vm.playDate }}</h3>
-    <h4 class="text">สวัสดี {{ vm.user.displayName }} : {{ vm.user.email }}</h4>
+    <h4 class="text">สวัสดี {{ vm.user.displayName }} : {{ vm.user.email }} <span ng-if="vm.isAdmin">ADMIN</span></h4>
     <p> <button ng-click="vm.logout()" class="btn btn-primary w-100">Logout</button></p>
     <hr/>
     <div class="row">
@@ -48,12 +42,13 @@
         </div>
     </div>
     <hr/>
-    <p ng-if="vm.memberLimitReached" class="fs-3 bg-danger text-white">Member limit reached for this week!</p>
+    <p ng-if="vm.memberLimitReached" class="fs-3 bg-danger text-white">ช้าไปนะ เต็มแล้วจ้าาาา รอคนยกเลิกนะ</p>
 
     <h4 class="text">สมาชิกที่ลงชื่อแล้ว ({{ vm.courtName }} วันที่ {{ vm.playDate }})</h4>
     <ol class="list-group list-group-numbered">
         <li class="list-group-item d-flex justify-content-between align-items-start" ng-repeat="member in vm.members">
-            <div class="ms-2 me-auto">
+            <div class="ms-4 me-auto">
+                <input type="checkbox" class="form-check-input" ng-checked="member.isHere" ng-click="vm.toggleIsHere(member)"/>
                 {{ member.nickname }} <span ng-if="vm.showTimestamp">at {{ vm.formatTimestamp(member.timestamp) | date:'yyyy-MM-dd HH:mm:ss' }}</span>
             </div>
             <span ng-if="vm.isAdmin" class="ms-2">
@@ -69,6 +64,14 @@
     <p>
     <button ng-click="vm.reload()" class="btn btn-info w-100">Reload Member List</button>
     </p>
+    <hr/>
+    <h4>Random Team</h4>
+    <button class="btn btn-primary w-100" ng-click="vm.randomteam()">Random</button>
+    <ol class="list-group list-group-numbered">
+        <li class="list-group-item d-flex align-items-start" ng-repeat="team in vm.randomTeamList">
+            {{ team }}
+        </li>
+    </ol>
     <hr/>
     <div ng-if="vm.isAdmin" class="row form-control">
         <h3 class="text">Admin Config</h3>

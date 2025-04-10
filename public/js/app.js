@@ -1,8 +1,9 @@
 // Firebase config
 //const VERSION = "1.0.1";
-const VERSION = "1.1";
-//const VERSION_DESC = "add bootstrap for Responsive UI";
-const VERSION_DESC = "new feature add anonymous user";
+const VERSION = "1.2";
+//const VERSION_DESC = "add bootstrap for Responsive UI"; // 1.0.1
+//const VERSION_DESC = "new feature add anonymous user";  // 1.1
+const VERSION_DESC = "New feature add field isHere for each member, random team";  // 1.2
 
 const firebaseConfig = {
     apiKey: "AIzaSyBCbO0XyJWgjaG2njpnsGoOIeGImjjLEb8",
@@ -30,6 +31,7 @@ const annonymousUser = {
     vm.user = null;
     vm.isAdmin = false;
     vm.members = [];
+    vm.randomTeamList = [];
     vm.nickname = '';
     vm.courtName = '';
     vm.playDate = '';
@@ -121,11 +123,20 @@ const annonymousUser = {
       await db.collection("weekly_members").add({
         nickname: vm.nickname,
         uid: vm.user.uid,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        isHere: false
       });
   
       vm.nickname = '';
       loadMembers();
+    };
+    vm.toggleIsHere = function (member) {
+      member.isHere = member.isHere == null ? true: !member.isHere;
+      firebase.firestore().collection("weekly_members").doc(member.id).update({
+        isHere: member.isHere
+      }).then(() => {
+        console.log("Updated isHere to:", member.isHere);
+      });
     };
   
     // Admin: delete member
@@ -171,5 +182,53 @@ const annonymousUser = {
       vm.doInit();
       loadMembers();
     };
+
+    vm.randomteam = function(){
+      var memberHereList = getMemberIsHere(); 
+      shuffle(memberHereList)
+      vm.randomTeamList = doRandomMember(memberHereList);
+      shuffle(vm.randomTeamList);
+    }
+
+    function getMemberIsHere(){
+      var memberHereList = [];
+      for(const member of vm.members){
+        if(member.isHere == true){
+          memberHereList.push(member.nickname);
+        }
+      }
+      return memberHereList;
+    }
+
+    function doRandomMember(memberList){
+      var randomTeamList = [];
+      var i = 0;
+      while(i<memberList.length){
+        var j = i+1;
+        if(j<memberList.length){
+          randomTeamList.push(memberList[i]+" - "+memberList[j]);
+        }else{
+          randomTeamList.push(memberList[i]);
+        }
+        i = i+2;
+      }
+      return randomTeamList;
+    }
+
+    function shuffle(array) {
+      let currentIndex = array.length;
+    
+      // While there remain elements to shuffle...
+      while (currentIndex != 0) {
+    
+        // Pick a remaining element...
+        let randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+    
+        // And swap it with the current element.
+        [array[currentIndex], array[randomIndex]] = [
+          array[randomIndex], array[currentIndex]];
+      }
+    }
 
   });
