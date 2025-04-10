@@ -45,6 +45,10 @@
     <p ng-if="vm.memberLimitReached" class="fs-3 bg-danger text-white">ช้าไปนะ เต็มแล้วจ้าาาา รอคนยกเลิกนะ</p>
 
     <h4 class="text">สมาชิกที่ลงชื่อแล้ว ({{ vm.courtName }} วันที่ {{ vm.playDate }})</h4>
+    <div class="ms-4 me-auto">
+        <input type="checkbox" id="toggleCheckAll" class="form-check-input" ng-click="vm.toggleCheckAllMember()" ng-checked="vm.checkAllMemberFlag" />
+        <label for="toggleCheckAll" class="form-check-label">Toggle Check All</label>
+    </div>
     <ol class="list-group list-group-numbered">
         <li class="list-group-item d-flex justify-content-between align-items-start" ng-repeat="member in vm.members">
             <div class="ms-4 me-auto">

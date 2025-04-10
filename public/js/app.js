@@ -1,9 +1,10 @@
 // Firebase config
 //const VERSION = "1.0.1";
-const VERSION = "1.2";
+const VERSION = "1.3";
 //const VERSION_DESC = "add bootstrap for Responsive UI"; // 1.0.1
 //const VERSION_DESC = "new feature add anonymous user";  // 1.1
-const VERSION_DESC = "New feature add field isHere for each member, random team";  // 1.2
+// const VERSION_DESC = "New feature add field isHere for each member, random team";  // 1.2
+const VERSION_DESC = "add toggle check all member";  // 1.3
 
 const firebaseConfig = {
     apiKey: "AIzaSyBCbO0XyJWgjaG2njpnsGoOIeGImjjLEb8",
@@ -40,6 +41,7 @@ const annonymousUser = {
     vm.MEMBER_LIMIT = 10;
     vm.version = VERSION;
     vm.versionDesc = VERSION_DESC;
+    vm.checkAllMemberFlag = false;
   
     vm.doInit = async function(){
         const webConfigDoc = await db.collection("config").doc("webconfig").get();
@@ -132,12 +134,16 @@ const annonymousUser = {
     };
     vm.toggleIsHere = function (member) {
       member.isHere = member.isHere == null ? true: !member.isHere;
+      updateMember(member);
+    };
+    
+    function updateMember(member){
       firebase.firestore().collection("weekly_members").doc(member.id).update({
         isHere: member.isHere
       }).then(() => {
         console.log("Updated isHere to:", member.isHere);
       });
-    };
+    }
   
     // Admin: delete member
     vm.deleteMember = async function(id) {
@@ -228,6 +234,14 @@ const annonymousUser = {
         // And swap it with the current element.
         [array[currentIndex], array[randomIndex]] = [
           array[randomIndex], array[currentIndex]];
+      }
+    }
+
+    vm.toggleCheckAllMember = function(){
+      vm.checkAllMemberFlag = !vm.checkAllMemberFlag;
+      for(const member of vm.members){
+        member.isHere = vm.checkAllMemberFlag;
+        updateMember(member);
       }
     }
 
