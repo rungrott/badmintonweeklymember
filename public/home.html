@@ -1,0 +1,36 @@
+    <div class="row">
+        <div class="col-md-8">
+            <input type="text" id="text-nickname" class="form-control" ng-model="vm.nickname" placeholder="ลงชื่อ" />
+        </div>
+        <div class="col-md-4">
+            <button class="btn btn-success w-100" ng-click="vm.submitNickname()" ng-disabled="!vm.nickname || vm.memberLimitReached">Submit</button>
+        </div>
+    </div>
+    <hr/>
+    <p ng-if="vm.memberLimitReached" class="fs-3 bg-danger text-white">ช้าไปนะ เต็มแล้วจ้าาาา รอคนยกเลิกนะ</p>
+
+    <h4 class="text">สมาชิกที่ลงชื่อแล้ว ({{ vm.courtName }} วันที่ {{ vm.playDate }})</h4>
+    <div class="ms-4 me-auto">
+        <input type="checkbox" id="toggleCheckAll" class="form-check-input" ng-click="vm.toggleCheckAllMember()" ng-checked="vm.checkAllMemberFlag" />
+        <label for="toggleCheckAll" class="form-check-label">Toggle Check All</label>
+    </div>
+    <ol class="list-group list-group-numbered">
+        <li class="list-group-item d-flex justify-content-between align-items-start" ng-repeat="member in vm.members">
+            <div class="ms-4 me-auto">
+                <input type="checkbox" class="form-check-input" ng-checked="member.isHere" ng-click="vm.toggleIsHere(member)"/>
+                {{ member.nickname }} <span ng-if="vm.showTimestamp">at {{ vm.formatTimestamp(member.timestamp) | date:'yyyy-MM-dd HH:mm:ss' }}</span>
+            </div>
+            <span ng-if="vm.isAdmin" class="ms-2">
+                <div ng-if="vm.isAdmin" ng-click="vm.deleteMember(member.id)">
+                    <svg class="bi" width="16" height="16">
+                        <use xlink:href="#trash"></use>
+                    </svg>
+                </div>
+            </span>
+        </li>
+    </ol>
+    <hr/>
+    <p>
+    <button ng-click="vm.reload()" class="btn btn-info w-100">Reload Member List</button>
+    </p>
+    <hr/>

@@ -1,11 +1,11 @@
 // Firebase config
 //const VERSION = "1.0.1";
-const VERSION = "1.3";
+const VERSION = "1.4";
 //const VERSION_DESC = "add bootstrap for Responsive UI"; // 1.0.1
 //const VERSION_DESC = "new feature add anonymous user";  // 1.1
 // const VERSION_DESC = "New feature add field isHere for each member, random team";  // 1.2
-const VERSION_DESC = "add toggle check all member";  // 1.3
-
+// const VERSION_DESC = "add toggle check all member";  // 1.3
+const VERSION_DESC = "add Navigator menu";  // 1.4
 const firebaseConfig = {
     apiKey: "AIzaSyBCbO0XyJWgjaG2njpnsGoOIeGImjjLEb8",
     authDomain: "badmintonweeklymember.firebaseapp.com",
@@ -42,6 +42,9 @@ const annonymousUser = {
     vm.version = VERSION;
     vm.versionDesc = VERSION_DESC;
     vm.checkAllMemberFlag = false;
+    vm.currentMenu = "home";
+    vm.menuToggle = document.getElementById('navbarNav');
+    vm.bsCollapse = new bootstrap.Collapse(vm.menuToggle, {toggle:false})
   
     vm.doInit = async function(){
         const webConfigDoc = await db.collection("config").doc("webconfig").get();
@@ -52,7 +55,8 @@ const annonymousUser = {
             vm.courtName = webConfig.courtName;
             vm.showTimestamp = webConfig.showTimestamp;
         }
-        if(vm.user.isAnonymous == true){
+        if(vm.user == null || vm.user.isAnonymous == true){
+          vm.user = {};
           vm.user.email = "anonymous@badmintonweeklymember.firebasestorage.app";
           vm.user.displayName = "Anonymous";
           vm.user.uid = "anonymouse.uid";
@@ -75,11 +79,14 @@ const annonymousUser = {
     // Logout
     vm.logout = function() {
       vm.isAdmin = false;
+      vm.currentMenu = "home";
+      vm.bsCollapse.hide();
       auth.signOut();
     };
   
     // On Auth State Changed
     auth.onAuthStateChanged(async function(user) {
+      vm.currentMenu = "home";
       console.log("onAuthStateChange : user="+JSON.stringify(user));
       $scope.$apply(() => {
         vm.user = user;
@@ -244,5 +251,11 @@ const annonymousUser = {
         updateMember(member);
       }
     }
+
+    vm.changeMenu = function(menuName){
+      vm.currentMenu = menuName;
+      vm.bsCollapse.toggle();
+      console.log(`currentMenu=${vm.currentMenu}, toggleNav=${vm.bsCollapse.toggle}`);
+    };
 
   });

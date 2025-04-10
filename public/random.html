@@ -1,0 +1,8 @@
+<h4>Random Team</h4>
+<button class="btn btn-primary w-100" ng-click="vm.randomteam()">Random</button>
+<ol class="list-group list-group-numbered">
+    <li class="list-group-item d-flex align-items-start" ng-repeat="team in vm.randomTeamList">
+        {{ team }}
+    </li>
+</ol>
+<hr/>
