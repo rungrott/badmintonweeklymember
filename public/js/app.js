@@ -6,14 +6,6 @@ const VERSION = "1.4";
 // const VERSION_DESC = "New feature add field isHere for each member, random team";  // 1.2
 // const VERSION_DESC = "add toggle check all member";  // 1.3
 const VERSION_DESC = "add Navigator menu";  // 1.4
-const firebaseConfig = {
-    apiKey: "AIzaSyBCbO0XyJWgjaG2njpnsGoOIeGImjjLEb8",
-    authDomain: "badmintonweeklymember.firebaseapp.com",
-    projectId: "badmintonweeklymember",
-    storageBucket: "badmintonweeklymember.firebasestorage.app",
-    messagingSenderId: "989527524097",
-    appId: "1:989527524097:web:ab1ad8f16344ce20fe9100"
-  };
 const annonymousUser = {
   email: "anonymous@dummymail.com",
   displayName: "Anonymous",
