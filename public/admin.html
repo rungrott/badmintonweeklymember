@@ -24,6 +24,13 @@
             <br/>
         </div>
         <div class="col-md-12">
+            <label for="adminAllowAnonymous" class="label">Allow Anonymous Login : </label>
+            <select id="adminAllowAnonymous" class="form-select" ng-model="vm.allowAnonymous" ng-options="opt for opt in [true,false]">
+                <option value="">---เลือก---</option>
+            </select>
+            <br/>
+        </div>
+        <div class="col-md-12">
             <button class="btn btn-success w-100" ng-click="vm.saveWebConfig()" >Save Config</button>
             <br/>
         </div>

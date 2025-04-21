@@ -1,11 +1,11 @@
 // Firebase config
-//const VERSION = "1.0.1";
-const VERSION = "1.4";
+const VERSION = "1.5";
 //const VERSION_DESC = "add bootstrap for Responsive UI"; // 1.0.1
 //const VERSION_DESC = "new feature add anonymous user";  // 1.1
 // const VERSION_DESC = "New feature add field isHere for each member, random team";  // 1.2
 // const VERSION_DESC = "add toggle check all member";  // 1.3
-const VERSION_DESC = "add Navigator menu";  // 1.4
+// const VERSION_DESC = "add navigator menu";  // 1.4
+ const VERSION_DESC = "add allow anonymous flag to allow or not allow anonymous login";  // 1.5
 const annonymousUser = {
   email: "anonymous@dummymail.com",
   displayName: "Anonymous",
@@ -35,6 +35,7 @@ const annonymousUser = {
     vm.versionDesc = VERSION_DESC;
     vm.checkAllMemberFlag = false;
     vm.currentMenu = "home";
+    vm.allowAnonymous = false;
     vm.menuToggle = document.getElementById('navbarNav');
     vm.bsCollapse = new bootstrap.Collapse(vm.menuToggle, {toggle:false})
   
@@ -46,6 +47,8 @@ const annonymousUser = {
             vm.playDate = webConfig.playDate;
             vm.courtName = webConfig.courtName;
             vm.showTimestamp = webConfig.showTimestamp;
+            vm.allowAnonymous = webConfig.allowAnonymous;
+            $scope.$apply();
         }
         if(vm.user == null || vm.user.isAnonymous == true){
           vm.user = {};
@@ -175,7 +178,8 @@ const annonymousUser = {
                 courtName: vm.courtName,
                 maxMember: vm.MEMBER_LIMIT,
                 playDate: vm.playDate,
-                showTimestamp: vm.showTimestamp
+                showTimestamp: vm.showTimestamp,
+                allowAnonymous: vm.allowAnonymous
             });
             loadMembers();
         }catch(error){
