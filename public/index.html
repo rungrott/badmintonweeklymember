@@ -42,7 +42,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
         <div class="container-fluid">
             <a class="navbar-brand" href="#" ng-click="vm.changeMenu('home')" ng-if="vm.user">🏸 Badminton Group</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" ng-disabled="!vm.user">
+            <button id="menuButton" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" ng-disabled="!vm.user">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -59,7 +59,7 @@
                 </ul>
                 <span class="navbar-text" ng-if="vm.user">
                     {{ vm.user.displayName }}
-                    <button class="btn btn-sm btn-outline-light ms-2" ng-click="vm.logout()">Logout</button>
+                    <button id="logoutNavButton" class="btn btn-sm btn-outline-light ms-2" ng-click="vm.logout()">Logout</button>
                 </span>
             </div>
         </div>
@@ -71,18 +71,18 @@
         </symbol>
     </svg>
   <div ng-if="!vm.user" class="container container-fluid">
-    <button ng-click="vm.loginWithGoogle()" class="btn btn-primary w-100 ">Login with Google</button>
+    <button id="loginGoogleButton" ng-click="vm.loginWithGoogle()" class="btn btn-primary w-100 ">Login with Google</button>
     <br/>
     <div>
     <br/>
-    <button ng-if="vm.allowAnonymous" ng-click="vm.loginWithAnonymous()" class="btn btn-secondary w-100 ">Login as Anonymous</button>
+    <button id="loginAnonymousButton" ng-if="vm.allowAnonymous" ng-click="vm.loginWithAnonymous()" class="btn btn-secondary w-100 ">Login as Anonymous</button>
     </div>
   </div>
   
   <div ng-if="vm.user" class="container container-fluid">
     <h3 class="text-center">ลงชื่อตีแบด {{ vm.courtName }} วันที่ {{ vm.playDate }}</h3>
     <h4 class="text">สวัสดี {{ vm.user.displayName }} : {{ vm.user.email }} <span ng-if="vm.isAdmin">ADMIN</span></h4>
-    <p> <button ng-click="vm.logout()" class="btn btn-primary w-100">Logout</button></p>
+    <p> <button id="logoutButton" ng-click="vm.logout()" class="btn btn-primary w-100">Logout</button></p>
     <hr/>
     <div ng-include="'home.html?v='+vm.version" ng-show="vm.currentMenu == 'home'"></div>
     <div ng-include="'random.html?v='+vm.version" ng-show="vm.currentMenu == 'random'"></div>

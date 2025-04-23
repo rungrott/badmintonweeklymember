@@ -1,11 +1,12 @@
 // Firebase config
-const VERSION = "1.5";
+const VERSION = "1.6.1";
 //const VERSION_DESC = "add bootstrap for Responsive UI"; // 1.0.1
 //const VERSION_DESC = "new feature add anonymous user";  // 1.1
 // const VERSION_DESC = "New feature add field isHere for each member, random team";  // 1.2
 // const VERSION_DESC = "add toggle check all member";  // 1.3
 // const VERSION_DESC = "add navigator menu";  // 1.4
- const VERSION_DESC = "add allow anonymous flag to allow or not allow anonymous login";  // 1.5
+// const VERSION_DESC = "add allow anonymous flag to allow or not allow anonymous login";  // 1.5
+const VERSION_DESC = "add GTM for track web site";  // 1.6
 const annonymousUser = {
   email: "anonymous@dummymail.com",
   displayName: "Anonymous",

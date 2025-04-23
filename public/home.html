@@ -3,7 +3,7 @@
             <input type="text" id="text-nickname" class="form-control" ng-model="vm.nickname" placeholder="ลงชื่อ" />
         </div>
         <div class="col-md-4">
-            <button class="btn btn-success w-100" ng-click="vm.submitNickname()" ng-disabled="!vm.nickname || vm.memberLimitReached">Submit</button>
+            <button id="submitMemberButton" class="btn btn-success w-100" ng-click="vm.submitNickname()" ng-disabled="!vm.nickname || vm.memberLimitReached">Submit</button>
         </div>
     </div>
     <hr/>
@@ -21,9 +21,9 @@
                 {{ member.nickname }} <span ng-if="vm.showTimestamp">at {{ vm.formatTimestamp(member.timestamp) | date:'yyyy-MM-dd HH:mm:ss' }}</span>
             </div>
             <span ng-if="vm.isAdmin" class="ms-2">
-                <div ng-if="vm.isAdmin" ng-click="vm.deleteMember(member.id)">
-                    <svg class="bi" width="16" height="16">
-                        <use xlink:href="#trash"></use>
+                <div ng-if="vm.isAdmin" ng-click="vm.deleteMember(member.id)" id="deleteMemberDivButton">
+                    <svg class="bi" width="16" height="16" id="deleteMemberSvgButton">
+                        <use xlink:href="#trash" id="deleteMemberUseButton"></use>
                     </svg>
                 </div>
             </span>
@@ -31,6 +31,6 @@
     </ol>
     <hr/>
     <p>
-    <button ng-click="vm.reload()" class="btn btn-info w-100">Reload Member List</button>
+    <button ng-click="vm.reload()" class="btn btn-info w-100" id="reloadMemberButton">Reload Member List</button>
     </p>
     <hr/>
