@@ -21,7 +21,7 @@
                 {{ member.nickname }} <span ng-if="vm.showTimestamp">at {{ vm.formatTimestamp(member.timestamp) | date:'yyyy-MM-dd HH:mm:ss' }}</span>
             </div>
             <span ng-if="vm.isAdmin" class="ms-2">
-                <div ng-if="vm.isAdmin" ng-click="vm.deleteMember(member.id)" id="deleteMemberDivButton">
+                <div ng-if="vm.isAdmin" ng-click="vm.deleteMember(member)" id="deleteMemberDivButton">
                     <svg class="bi" width="16" height="16" id="deleteMemberSvgButton">
                         <use xlink:href="#trash" id="deleteMemberUseButton"></use>
                     </svg>

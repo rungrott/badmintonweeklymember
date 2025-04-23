@@ -1,5 +1,5 @@
 // Firebase config
-const VERSION = "1.6.1";
+const VERSION = "1.6.2";
 //const VERSION_DESC = "add bootstrap for Responsive UI"; // 1.0.1
 //const VERSION_DESC = "new feature add anonymous user";  // 1.1
 // const VERSION_DESC = "New feature add field isHere for each member, random team";  // 1.2
@@ -149,9 +149,9 @@ const annonymousUser = {
     }
   
     // Admin: delete member
-    vm.deleteMember = async function(id) {
-      if(window.confirm(`ต้องการลบสมาชิก : ${id} `)){
-        await db.collection("weekly_members").doc(id).delete();
+    vm.deleteMember = async function(member) {
+      if(window.confirm(`ต้องการลบสมาชิก : ${member.nickname} `)){
+        await db.collection("weekly_members").doc(member.id).delete();
         loadMembers();
       }
       
