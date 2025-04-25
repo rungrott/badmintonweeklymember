@@ -1,5 +1,5 @@
 // Firebase config
-const VERSION = "1.6.2";
+const VERSION = "1.6.3";
 //const VERSION_DESC = "add bootstrap for Responsive UI"; // 1.0.1
 //const VERSION_DESC = "new feature add anonymous user";  // 1.1
 // const VERSION_DESC = "New feature add field isHere for each member, random team";  // 1.2
@@ -123,7 +123,7 @@ const annonymousUser = {
   
     // Submit nickname
     vm.submitNickname = async function() {
-      if (!vm.nickname || vm.memberLimitReached) return;
+      if (!vm.nickname) return;
   
       await db.collection("weekly_members").add({
         nickname: vm.nickname,

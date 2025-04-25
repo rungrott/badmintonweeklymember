@@ -3,11 +3,11 @@
             <input type="text" id="text-nickname" class="form-control" ng-model="vm.nickname" placeholder="ลงชื่อ" />
         </div>
         <div class="col-md-4">
-            <button id="submitMemberButton" class="btn btn-success w-100" ng-click="vm.submitNickname()" ng-disabled="!vm.nickname || vm.memberLimitReached">Submit</button>
+            <button id="submitMemberButton" class="btn btn-success w-100" ng-click="vm.submitNickname()" ng-disabled="!vm.nickname">Submit</button>
         </div>
     </div>
     <hr/>
-    <p ng-if="vm.memberLimitReached" class="fs-3 bg-danger text-white">ช้าไปนะ เต็มแล้วจ้าาาา รอคนยกเลิกนะ</p>
+    <p ng-if="vm.memberLimitReached" class="fs-3 bg-danger text-white">ช้าไปนะ เต็มแล้วจ้าาาา ลงชื่อเป็นตัวสำรองไปก่อน</p>
 
     <h4 class="text">สมาชิกที่ลงชื่อแล้ว ({{ vm.courtName }} วันที่ {{ vm.playDate }})</h4>
     <div class="ms-4 me-auto">
@@ -15,10 +15,10 @@
         <label for="toggleCheckAll" class="form-check-label">Toggle Check All</label>
     </div>
     <ol class="list-group list-group-numbered">
-        <li class="list-group-item d-flex justify-content-between align-items-start" ng-repeat="member in vm.members">
+        <li ng-class="($index+1>vm.MEMBER_LIMIT)?'list-group-item d-flex justify-content-between align-items-start bg-secondary text-white':'list-group-item d-flex justify-content-between align-items-start bg-white'" ng-repeat="member in vm.members">
             <div class="ms-4 me-auto">
                 <input type="checkbox" class="form-check-input" ng-checked="member.isHere" ng-click="vm.toggleIsHere(member)"/>
-                {{ member.nickname }} <span ng-if="vm.showTimestamp">at {{ vm.formatTimestamp(member.timestamp) | date:'yyyy-MM-dd HH:mm:ss' }}</span>
+                {{ ($index+1>vm.MEMBER_LIMIT)?'สำรอง : '+member.nickname:member.nickname }} <span ng-if="vm.showTimestamp">at {{ vm.formatTimestamp(member.timestamp) | date:'yyyy-MM-dd HH:mm:ss' }}</span>
             </div>
             <span ng-if="vm.isAdmin" class="ms-2">
                 <div ng-if="vm.isAdmin" ng-click="vm.deleteMember(member)" id="deleteMemberDivButton">
